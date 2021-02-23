@@ -2,13 +2,14 @@
   "name": "note-taker",
   "version": "1.0.0",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Sarah DeMercurio",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.17.1"
   },
   "keywords": [],
   "description": ""
