@@ -1,3 +1,6 @@
+// api route is for data
+// helps determine what data the user sees as well as what data the user can post to our server.
+
 const router = require('express').Router();
 const noteStorage = require('../db/notes');
 
