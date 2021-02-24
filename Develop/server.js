@@ -14,6 +14,7 @@ app.use(express.json());
 // serve images, CSS files, and JavaScript files in a directory named public
 app.use(express.static('public'));
 
+
 app.use('/api', apiRoutes);
 app.use('/', htmlRoutes);
 
