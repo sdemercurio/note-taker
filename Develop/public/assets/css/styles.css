@@ -13,6 +13,7 @@ html, body {
   margin-right: 15px;
   font-size: 1.5rem;
   cursor: pointer;
+  color: white;
 }
 
 .note-textarea, .note-title {
