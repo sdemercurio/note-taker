@@ -1,23 +1,23 @@
 // api route is for data
 // helps determine what data the user sees as well as what data the user can post to our server.
-const { addNote, getNotes, deleteNote } = require("../db/notes");
+const { an, gn, dn } = require("../db/notes");
 
-module.exports = function(app) {
-  app.get("/api/notes", function(req, res) {
-    const an = getNotes();
+module.exports = (app) => {
+  app.get("/api/notes", (req, res) => {
+    const an = gn();
     return res.json(an);
   });
 
-  app.post("/api/notes", function(req, res) {
+  app.post("/api/notes", (req, res) => {
     const { title, text } = req.body;
 
-    const postNote = addNote(title, text);
+    const postNote = an(title, text);
 
     return res.json(postNote);
   });
 
-  app.delete("/api/notes/:id", function(req, res) {
-    deleteNote(req.params.id);
+  app.delete("/api/notes/:id", (req, res) => {
+    dn(req.params.id);
 
     return res.status(200).send();
   });

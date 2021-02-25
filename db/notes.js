@@ -1,51 +1,47 @@
-// load json
-
-// get note
-
-// add note
-
-//delete note
-
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const util = require('util');
 const uuidv1 = require("uuid").v1;
+const readFileAsync = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
 
-const writeToDB = note => {
-  try {
-    fs.writeFileSync(path.resolve(__dirname, "db.json"), JSON.stringify(note), {
-      encoding: "utf8"
+class Notes {
+  rn() {
+    return rnFileAsync('./db.json', 'utf8');
+  };
+
+  wn(data) {
+    return writeFileAsync('./db.json', JSON.stringify(data));
+  };
+
+  gn() {
+    return this.read().then(data => {
+      let notes;
+
+      try {
+        notes = [].concat(JSON.parse(data))
+      } catch (error) {
+        notes = [];
+      };
+      return notes
     });
-  } catch (error) {
-    throw new Error(error);
+  };
+
+  an(data) {
+    const { title, text } = data
+    if (!title || !text) {
+      throw new Error('Please enter valid title and text.');
+    }
+    const complete = { title, text, id: uuidv1() }
+    return this.gn()
+    .then(data => [...data, complete])
+    .then(data => this.write(data));
+  };
+
+  dn(id) {
+    return this.gn()
+    .then(data => data.filter(note => note.id !== id))
+    .then(data => this.write(data));
   }
-  return true;
 };
 
-const deleteNote = noteID => {
-  const an = getNotes();
-
-  const ln = an.filter(({ id }) => id !== noteID);
-
-  writeToDB(ln);
-  return;
-};
-
-const addNote = (title, text) => {
-  const en = getNotes();
-  const cn = { title, text, id: uuidv1() };
-  const rn = [cn, ...en];
-  console.log("updated notes: ", rn);
-  writeToDB(rn);
-  return cn;
-};
-
-const getNotes = () => {
-  const an = fs.readFileSync(path.resolve(__dirname, "db.json"));
-  return JSON.parse(an.toString("utf8"));
-};
-
-module.exports = {
-  addNote,
-  getNotes,
-  deleteNote
-};
+module.exports = new Notes();
