@@ -18,6 +18,9 @@ module.exports = function(app) {
   //     return; 
   // });
  // let data =  fs.readFileSync(path.join(__dirname , '../db/db.json'), 'utf-8')
+
+ //             REPLACE PROMISES THIS WAY
+
   fs.readFile(path.join(__dirname , '../db/db.json'),'utf-8',(err, data) => {
     if(err)throw err
 
@@ -31,13 +34,13 @@ module.exports = function(app) {
   app.post("/api/notes", function(req, res) {
     const { title, text } = req.body;
 
-    const postNote = an(title, text);
+    const postNote = addNote(title, text);
 
     return res.json(postNote);
   });
 
   app.delete("/api/notes/:id", function(req, res) {
-    dn(req.params.id);
+    deleteNote(req.params.id);
 
     return res.status(200).send();
   });

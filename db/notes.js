@@ -5,15 +5,15 @@ const readFileAsync = util.promisify(fs.readFile);
 const writeFileAsync = util.promisify(fs.writeFile);
 
 class Notes {
-  rn() {
+  readNote() {
     return readFileAsync('./db.json', 'utf8');
   };
 
-  wn(data) {
+  writeNote(data) {
     return writeFileAsync('./db.json', JSON.stringify(data));
   };
 
-  gn() {
+  getNote() {
     readFileAsync('./db.json', 'utf8').then(data => {
       let notes;
         notes = [].concat(JSON.parse(data))
@@ -24,21 +24,21 @@ class Notes {
     });
   };
 
-  an(data) {
+  addNote(data) {
     const { title, text } = data
     if (!title || !text) {
       throw new Error('Please enter valid title and text.');
     }
     const complete = { title, text, id: uuidv1() }
-    return this.gn()
+    return this.getNote()
     .then(data => [...data, complete])
-    .then(data => this.wn(data));
+    .then(data => this.writeNote(data));
   };
 
-  dn(id) {
-    return this.gn()
+  deleteNote(id) {
+    return this.getNote()
     .then(data => data.filter(note => note.id !== id))
-    .then(data => this.write(data));
+    .then(data => this.writeNote(data));
   }
 };
 
