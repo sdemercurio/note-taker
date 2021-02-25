@@ -6,7 +6,7 @@ const writeFileAsync = util.promisify(fs.writeFile);
 
 class Notes {
   rn() {
-    return rnFileAsync('./db.json', 'utf8');
+    return readFileAsync('./db.json', 'utf8');
   };
 
   wn(data) {
@@ -14,15 +14,13 @@ class Notes {
   };
 
   gn() {
-    return this.read().then(data => {
+    readFileAsync('./db.json', 'utf8').then(data => {
       let notes;
-
-      try {
         notes = [].concat(JSON.parse(data))
-      } catch (error) {
-        notes = [];
-      };
-      return notes
+        return notes
+    }).catch((error) =>  {
+      let notes = [];
+        return; 
     });
   };
 
@@ -34,7 +32,7 @@ class Notes {
     const complete = { title, text, id: uuidv1() }
     return this.gn()
     .then(data => [...data, complete])
-    .then(data => this.write(data));
+    .then(data => this.wn(data));
   };
 
   dn(id) {
