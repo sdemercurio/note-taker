@@ -34,9 +34,13 @@ module.exports = function(app) {
   app.post("/api/notes", function(req, res) {
     const { title, text } = req.body;
 
-    const postNote = addNote(title, text);
+   // const postNote = addNote(title, text);
+   fs.writeFile(path.join(__dirname , '../db/db.json'),JSON.stringify({title, text}), 'utf-8', () => {
 
-    return res.json(postNote);
+   })
+
+    //res.json(postNote);
+    res.json({title, text})
   });
 
   app.delete("/api/notes/:id", function(req, res) {
